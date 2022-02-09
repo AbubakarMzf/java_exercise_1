@@ -3,7 +3,8 @@ import java.util.Scanner;
 public class Launcher {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        while(true) {
+            Scanner sc = new Scanner(System.in);
             System.out.println("Input :");
             String input = sc.nextLine();
             switch (input) {
@@ -12,5 +13,6 @@ public class Launcher {
                 default:
                     System.out.println("Unknown command");
             }
+        }
     }
 }
