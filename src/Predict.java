@@ -17,9 +17,10 @@ public class Predict implements Command{
         Path filePath = Paths.get(path);
         try {
             String content = Files.readString(filePath);
-            String[] word_list = content.toLowerCase().split(" ");
+            String[] word_list = content.split(" ");
             System.out.println("Enter a word :");
             String mot = sc.nextLine();
+            mot = mot.toLowerCase();
             String phrase = mot;
             for (int i = 0; i < 19; i++) {
                 ArrayList<String> mot_apres = new ArrayList<String>();
