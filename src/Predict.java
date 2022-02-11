@@ -34,7 +34,7 @@ public class Predict implements Command{
                     }
                 }
                 Collections.sort(mot_apres);
-                System.out.println("liste des mots apres " + mot_apres);
+                //System.out.println("liste des mots apres " + mot_apres);
 
 
                 int maxi = 1;
@@ -56,7 +56,7 @@ public class Predict implements Command{
                     mot_max = mot_apres.get(mot_apres.size() - 1);
                     maxi = counte;
                 }
-                System.out.println("j'ai hoisis le mot : " + mot_max);
+                //System.out.println("j'ai hoisis le mot : " + mot_max);
                 phrase += " " + mot_max;
                 mot= mot_max;
 /*
@@ -82,7 +82,7 @@ public class Predict implements Command{
                 //mot = curr;
 
             }
-            System.out.println("phrase : " + phrase);
+            System.out.println(phrase);
         }
         catch(IOException e) {
             System.out.println("Unreadable file: " + e);
