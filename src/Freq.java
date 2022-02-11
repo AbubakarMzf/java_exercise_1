@@ -1,11 +1,54 @@
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
-public class Freq implements Command{
+public class Freq implements Command {
+
+    static void readFile(String file) {
+        try {
+            Path filePath = Paths.get(file);
+            String content = Files.readString(filePath);
+            String[] lines = content.split("\n");
+            for (String line : lines) {
+                String[] words = line.split(" ");
+                LinkedHashMap<String, Integer> occurences = new LinkedHashMap<>();
+                boolean isLineEmpty = false;
+                for (String word : words) {
+                    int value = 0;
+                    if (word.isBlank()) {
+                        isLineEmpty = true;
+                        break;
+                    }
+                    if (occurences.containsKey(word.toLowerCase()))
+                        value = occurences.get(word.toLowerCase());
+                    occurences.put(word.toLowerCase(), value + 1);
+                }
+                int limit = 0;
+                while (limit < 3 || occurences.size() < 0) {
+                    String indice = "";
+                    int max = -1;
+                    for (Map.Entry<String, Integer> entry : occurences.entrySet()) {
+                        String key = entry.getKey();
+                        int value = entry.getValue();
+                        if (value > max) {
+                            indice = key;
+                            max = value;
+                        }
+                    }
+                    if (!isLineEmpty) System.out.print(indice + " ");
+                    occurences.remove(indice);
+                    limit += 1;
+                }
+                if (!isLineEmpty) System.out.print("\n");
+            }
+        } catch(Exception e) {
+            System.out.println("Unreadable file: " + e.getClass() + " " +  e.getMessage());
+        }
+    }
+
     @Override
     public String name() {
         return "freq";
@@ -13,42 +56,9 @@ public class Freq implements Command{
 
     @Override
     public boolean run(Scanner sc) {
-        System.out.println("Enter file path :");
-        String path = sc.nextLine();
-        Path filePath = Paths.get(path);
-        try {
-            String content = Files.readString(filePath);
-            String[] line_list = content.split("\n");
-            for (int line = 0; line < line_list.length; line++) {
-                String[] mot = {"","",""};
-                int[] maxi_occur = {0,0,0};
-                String[] lineSplit = line_list[line].split(" ");
-                Arrays.sort(lineSplit);
-                int count = 1;
-                for (int i = 1; i <= lineSplit.length - 1; i++) {
-                    if (lineSplit[i].equals(lineSplit[i - 1]) && i != lineSplit.length - 1) {
-                        count += 1;
-                    } else {
-                        int minimum = maxi_occur[0];
-                        int indice = 0;
-                        for (int j = 0; j < maxi_occur.length; j++) {
-                            if (maxi_occur[j] < minimum) {
-                                minimum = maxi_occur[j];
-                                indice = j;
-                            }
-                        }
-                        maxi_occur[indice] = count;
-                        mot[indice] = lineSplit[i - 1];
-                        count = 1;
-                    }
-                }
-                System.out.println("3 mots les plus fréquents à la ligne " + line + " : " + mot[0] + "," + mot[1] + "," + mot[2]);
-            }
-        }
-        catch(IOException e) {
-            System.out.println("Unreadable file: " + e);
-            return false;
-        }
+        System.out.println("Fichier :");
+        String file = sc.nextLine();
+        readFile(file);
         return true;
     }
 }
